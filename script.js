@@ -48,11 +48,46 @@ document.addEventListener("DOMContentLoaded", function () {
   // Mobile menu toggle
   const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
   const navLinks = document.querySelector(".nav-links");
+  const menuOverlay = document.querySelector(".menu-overlay");
+
+  const closeMenu = () => {
+    navLinks.classList.remove("active");
+    mobileMenuBtn.classList.remove("active");
+    menuOverlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  };
+
+  const openMenu = () => {
+    navLinks.classList.add("active");
+    mobileMenuBtn.classList.add("active");
+    menuOverlay.classList.add("active");
+    document.body.classList.add("menu-open");
+  };
 
   if (mobileMenuBtn) {
     mobileMenuBtn.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-      mobileMenuBtn.classList.toggle("active");
+      if (navLinks.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close menu when clicking a link
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Close menu when clicking overlay
+    if (menuOverlay) {
+      menuOverlay.addEventListener("click", closeMenu);
+    }
+
+    // Close menu on resize to desktop
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 768) {
+        closeMenu();
+      }
     });
   }
 
